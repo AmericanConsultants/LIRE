@@ -71,3 +71,13 @@ test {
     exclude 'net/semanticmetadata/lire/imageanalysis/TestExtraction**'
     exclude 'net/semanticmetadata/lire/TestProperties**'
 }
+
+task runParallelIndexer(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'net.semanticmetadata.lire.indexers.parallel.IndexRunner'
+    jvmArgs '-Xmx6144m'
+
+    // arguments to pass to the application
+    args('-i /data1/lire/indexes/testindex -n 16 -d /data1/'.split(' '))
+}
+
