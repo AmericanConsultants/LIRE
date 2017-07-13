@@ -69,6 +69,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //import net.semanticmetadata.lire.imageanalysis.features.global.ACCID;
@@ -1107,9 +1108,9 @@ public class ParallelIndexer implements Runnable {
                         conSampleMap.put(tmp.getFileName(), (documentBuilder.extractLocalFeatures(image, ((LocalFeatureExtractor) extractorItem.getExtractorInstance())).getFeatures()));
                     }
                 } catch (InterruptedException | IOException e) {
-                    log.severe(e.getMessage());
+                    log.log(Level.SEVERE, e.getMessage(), e);
                 }  catch (Exception e) {
-                    log.severe(e.getMessage());
+                	log.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         }
