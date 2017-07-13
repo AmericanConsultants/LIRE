@@ -20,6 +20,8 @@ public class IndexRunner {
         String imageDirectory = null;
         File imageList = null;
         int numThreads = 10;
+        int numOfClusters = 512;
+        int numOfDocsForVocabulary = 10000;         		        
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (arg.startsWith("-i")) {  // index
@@ -43,6 +45,22 @@ public class IndexRunner {
                         System.exit(-1);
                     }
                 }
+            }else if (arg.startsWith("-c")) { // number of clusters
+                if ((i + 1) < args.length) {
+                    try {
+                        numOfClusters = Integer.parseInt(args[i + 1]);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Could not read number of clusters: " + args[i + 1] + "\nUsing default value " + numOfClusters);
+                    }
+                }
+            }else if (arg.startsWith("-v")) { // number of docs for vocabulary
+                if ((i + 1) < args.length) {
+                    try {
+                        numOfDocsForVocabulary = Integer.parseInt(args[i + 1]);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Could not read number of docs for vocabulary: " + args[i + 1] + "\nUsing default value " + numOfDocsForVocabulary);
+                    }
+                }
             } else if (arg.startsWith("-d")) { // image directory
                 if ((i + 1) < args.length) {
                     imageDirectory = args[i + 1];
@@ -55,15 +73,15 @@ public class IndexRunner {
         } else if (imageList == null && (imageDirectory == null || !new File(imageDirectory).exists())) {
             System.exit(-1);
         }
+        
+
         ParallelIndexer parallelIndexer;
-        int numOfClusters = 512;
-        int numOfDocsForVocabulary = 1000;         		
+        
         if (imageList != null) {
         	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageList, numOfClusters, numOfDocsForVocabulary, BOVW.class);
         } else {
         	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageDirectory, numOfClusters, numOfDocsForVocabulary, BOVW.class);
         }
-//        p.addExtractor(ACCID.class);
         parallelIndexer.addExtractor(CEDD.class);
         parallelIndexer.addExtractor(JCD.class);
         parallelIndexer.addExtractor(EdgeHistogram.class);

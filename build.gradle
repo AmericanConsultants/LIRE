@@ -78,7 +78,7 @@ task runParallelIndexerLocal(type: JavaExec) {
     jvmArgs = ['-Xmx8192m', '-Djava.library.path="/usr/local/Cellar/opencv/2.4.13.2/share/OpenCV/java"']
 
     // arguments to pass to the application
-    args('-i /data1/lireIndex/testindex -n 16 -d /data1/tsdrImageData/2017'.split(' '))
+    args('-i /data1/lireIndex/testindex -n 16 -d /Users/greensod/usptoWork/TrademarkRefiles/data/tsdrImages/Jan-2011 -c 1000 -v 10000'.split(' '))
 }
 
 task runParallelIndexer(type: JavaExec) {
@@ -87,7 +87,7 @@ task runParallelIndexer(type: JavaExec) {
     jvmArgs = ['-Xmx8192m','-Djava.library.path=/usr/local/share/OpenCV/java']
 
     // arguments to pass to the application
-    args('-i /data1/lireIndex/testindex -n 16 -d /data1/tsdrImageData/2017'.split(' '))
+    args('-i /data1/lireIndex/lireindex1 -n 128 -d /data1/tsdrImageData/2016-part1 -c 1000 -v 10000'.split(' '))
 }
 
 
