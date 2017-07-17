@@ -1,9 +1,14 @@
 /*
 This is the GRADLE build file for LIRE.
  */
+ 
+group = 'net.semanticmetadata'
+// name = 'lire'
+
+ 
 apply plugin: 'java'
 apply plugin: 'project-report'
-
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 version = '1.0_b04'
@@ -43,6 +48,14 @@ dependencies {
 
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
 /**
  * Task for getting all the dependencies downloaded.
  */
@@ -78,7 +91,7 @@ task runParallelIndexerLocal(type: JavaExec) {
     jvmArgs = ['-Xmx8192m', '-Djava.library.path="/usr/local/Cellar/opencv/2.4.13.2/share/OpenCV/java"']
 
     // arguments to pass to the application
-    args('-i /data1/lireIndex/testindex -n 16 -d /Users/greensod/usptoWork/TrademarkRefiles/data/tsdrImages/Jan-2011 -c 1000 -v 10000'.split(' '))
+    args('-i /data1/lireIndex/testindex -n 16 -d /Users/greensod/usptoWork/TrademarkRefiles/data/tsdrImages/Jan-2011 -c 512 -v 500'.split(' '))
 }
 
 task runParallelIndexer(type: JavaExec) {
