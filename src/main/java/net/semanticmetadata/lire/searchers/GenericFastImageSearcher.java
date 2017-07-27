@@ -89,6 +89,8 @@ public class GenericFastImageSearcher extends AbstractImageSearcher {
 
     protected LinkedBlockingQueue<Map.Entry<Integer, byte[]>> queue = new LinkedBlockingQueue<Map.Entry<Integer, byte[]>>(100);
     protected int numThreads = DocumentBuilder.NUM_OF_THREADS;
+    
+    protected ImageSearchHits imagesToSearch;
 
 
     public GenericFastImageSearcher(int maxHits, Class<? extends GlobalFeature> globalFeature) {
@@ -292,23 +294,32 @@ public class GenericFastImageSearcher extends AbstractImageSearcher {
         double tmpDistance;
         int docs = reader.numDocs();
         if (!isCaching) {
+        	if(imagesToSearch != null){
+        		docs = imagesToSearch.length();
+        	}
             // we read each and every document from the index and then we compare it to the query.
             for (int i = 0; i < docs; i++) {
+            	int docId = 0;
                 if (reader.hasDeletions() && !liveDocs.get(i)) continue; // if it is deleted, just ignore it.
-
-                d = reader.document(i);
+                if(imagesToSearch != null){
+                	docId = imagesToSearch.documentID(i);
+                	d = reader.document(docId);
+                }else{
+                	docId = i;                	
+                	d = reader. document(docId);                	
+                }                
                 tmpDistance = getDistance(d, lireFeature);
                 assert (tmpDistance >= 0);
                 // if the array is not full yet:
                 if (this.docs.size() < maxHits) {
-                    this.docs.add(new SimpleResult(tmpDistance, i));
+                    this.docs.add(new SimpleResult(tmpDistance, docId));
                     if (tmpDistance > maxDistance) maxDistance = tmpDistance;
                 } else if (tmpDistance < maxDistance) {
                     // if it is nearer to the sample than at least on of the current set:
                     // remove the last one ...
                     this.docs.remove(this.docs.last());
                     // add the new one ...
-                    this.docs.add(new SimpleResult(tmpDistance, i));
+                    this.docs.add(new SimpleResult(tmpDistance, docId));
                     // and set our new distance border ...
                     maxDistance = this.docs.last().getDistance();
                 }
@@ -596,5 +607,13 @@ public class GenericFastImageSearcher extends AbstractImageSearcher {
     public String toString() {
         return "GenericSearcher using " + extractorItem.getExtractorClass().getName();
     }
+
+	public ImageSearchHits getImagesToSearch() {
+		return imagesToSearch;
+	}
+
+	public void setImagesToSearch(ImageSearchHits imagesToSearch) {
+		this.imagesToSearch = imagesToSearch;
+	}
 
 }
