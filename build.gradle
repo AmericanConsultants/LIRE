@@ -88,19 +88,19 @@ test {
 task runParallelIndexerLocal(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'net.semanticmetadata.lire.indexers.parallel.IndexRunner'
-    jvmArgs = ['-Xmx8192m', '-Djava.library.path="/usr/local/Cellar/opencv/2.4.13.2/share/OpenCV/java"']
+    jvmArgs = ['-Xmx10240m', '-Djava.library.path=/usr/local/Cellar/opencv/2.4.13.2/share/OpenCV/java']
 
     // arguments to pass to the application
-    args('-i /data1/lireIndex/testindex -n 16 -d /Users/greensod/usptoWork/TrademarkRefiles/data/tsdrImages/Jan-2011 -c 512 -v 500'.split(' '))
+    args('-i /Users/greensod/usptoWork/TrademarkRefiles/data/lireData/lireLuceneIndex/lireIndexerDec07-sift-512-vlad-7813 -n 8 -d /Users/greensod/usptoWork/TrademarkRefiles/data/lireData/designCodeImages -c 512 -v 7813'.split(' '))
 }
 
 task runParallelIndexer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'net.semanticmetadata.lire.indexers.parallel.IndexRunner'
-    jvmArgs = ['-Xmx8192m','-Djava.library.path=/usr/local/share/OpenCV/java']
+    jvmArgs = ['-Xmx10240m','-Djava.library.path=/usr/local/share/OpenCV/java']
 
     // arguments to pass to the application
-    args('-i /data1/lireIndex/lireindex1 -n 128 -d /data1/tsdrImageData/2016-part1 -c 1000 -v 10000'.split(' '))
+    args('-i /data1/lireIndex/lireindex3 -n 12 -d /data1/tsdrImageData/lireImagesToIndex -c 256 -v 24702'.split(' '))
 }
 
 

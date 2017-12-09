@@ -948,6 +948,9 @@ public class ParallelIndexer implements Runnable {
 
                     if (flag) {
                         start = System.currentTimeMillis();
+//                        for(int i = 500; i < 10000; i=i+500){
+//                        	codebookGenerator(conSampleMap, i);
+//                        }
                         codebook = codebookGenerator(conSampleMap, numOfClusters);
                         Cluster.writeClusters(codebook, indexPath + ".config/" + codebookTitle + numOfClusters);
                         mapWithClassesAndCodebooks.get(extractorItem).add(codebook);
@@ -1386,8 +1389,8 @@ public class ParallelIndexer implements Runnable {
         double threshold = Math.max(20d, (double) k.getFeatureCount() / 1000d);
         System.out.println("Threshold = " + df.format(threshold));
         int cStep = 3;
-
-        while (Math.abs(newStress - lastStress) > threshold && cStep < 12) {
+        
+        while (Math.abs(newStress - lastStress) > threshold && cStep < 100) {
             System.out.println(convertTime(System.currentTimeMillis() - start) + " -> Next step. Stress difference ~ |" + (int) newStress + " - " + (int) lastStress + "| = " + df.format(Math.abs(newStress - lastStress)));
             start = System.currentTimeMillis();
             lastStress = newStress;
@@ -1398,6 +1401,7 @@ public class ParallelIndexer implements Runnable {
             }
             cStep++;
         }
+        System.out.println("Stress for cluster size  - "+numClusters+" is - "+newStress);
 
         return k.getClusters();
     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.LinkedList;
 
 import net.semanticmetadata.lire.aggregators.BOVW;
+import net.semanticmetadata.lire.aggregators.VLAD;
 import net.semanticmetadata.lire.classifiers.Cluster;
 import net.semanticmetadata.lire.imageanalysis.features.global.CEDD;
 import net.semanticmetadata.lire.imageanalysis.features.global.EdgeHistogram;
@@ -14,7 +15,7 @@ import net.semanticmetadata.lire.imageanalysis.features.local.simple.SimpleExtra
 
 public class IndexRunner {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws  Exception{
 
         String indexPath = null;
         String imageDirectory = null;
@@ -78,17 +79,17 @@ public class IndexRunner {
         ParallelIndexer parallelIndexer;
         
         if (imageList != null) {
-        	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageList, numOfClusters, numOfDocsForVocabulary, BOVW.class);
+        	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageList, numOfClusters, numOfDocsForVocabulary, VLAD.class);
         } else {
-        	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageDirectory, numOfClusters, numOfDocsForVocabulary, BOVW.class);
+        	parallelIndexer = new ParallelIndexer(numThreads, indexPath, imageDirectory, numOfClusters, numOfDocsForVocabulary, VLAD.class);
         }
-        parallelIndexer.addExtractor(CEDD.class);
-        parallelIndexer.addExtractor(JCD.class);
-        parallelIndexer.addExtractor(EdgeHistogram.class);
-        parallelIndexer.addExtractor(CvSurfExtractor.class, new LinkedList<Cluster[]>());
+//        parallelIndexer.addExtractor(CEDD.class);
+//        parallelIndexer.addExtractor(JCD.class);
+//        parallelIndexer.addExtractor(EdgeHistogram.class);
+//       	  parallelIndexer.addExtractor(CvSurfExtractor.class, Cluster.readClusters("/Users/greensod/usptoWork/TrademarkRefiles/data/lireData/lireLuceneIndex/lireIndexerDec06-c256-vlad-7813.config/CvSURF256"));
         parallelIndexer.addExtractor(CvSiftExtractor.class, new LinkedList<Cluster[]>());
-        parallelIndexer.addExtractor(CEDD.class, SimpleExtractor.KeypointDetector.CVSURF, new LinkedList<Cluster[]>());
-        parallelIndexer.addExtractor(CEDD.class, SimpleExtractor.KeypointDetector.CVSIFT, new LinkedList<Cluster[]>());
+//        parallelIndexer.addExtractor(CEDD.class, SimpleExtractor.KeypointDetector.CVSURF, Cluster.readClusters("/Users/greensod/usptoWork/TrademarkRefiles/data/lireData/lireLuceneIndex/lireIndexerNov29.config/SIMPLEdetCVSURFCEDD2000"));
+//        parallelIndexer.addExtractor(CEDD.class, SimpleExtractor.KeypointDetector.CVSIFT, new LinkedList<Cluster[]>());
         
         parallelIndexer.run();
     		
